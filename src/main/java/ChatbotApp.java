@@ -1,9 +1,7 @@
 
 import java.util.Scanner;
 
-import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import main.java.demo.ModelUtils;
+import main.java.demo.SimpleNeuralNetwork;
 
 public class ChatbotApp {
 
@@ -20,52 +18,39 @@ public class ChatbotApp {
      * @docauthor Chris Amoah
      */
     public static void main(String[] args) throws Exception {
-        // Load the trained model
-        MultiLayerNetwork model = loadModel();
+        // Initialize the neural network model
+        SimpleNeuralNetwork model = loadModel();
 
-        // Implement code to interact with users
+        // Interact with the user
         System.out.println("Welcome to the weather forecasting system!");
         System.out.println("Please enter a city name to get the weather forecast:");
 
-        // User inputs
         Scanner scanner = new Scanner(System.in);
         String city = scanner.nextLine();
-        System.out.println("You: " + city);
+        System.out.println("You entered: " + city);
 
-        // Get the weather forecast for the city by randomized numbers from 60-89f
-        double temperature = Math.random() * (89 - 60) + 60;
-        String response = getResponse(model, city);
-        System.out.println("Weather forecast for " + response + ":" + temperature + "F");
+        // Generate a weather forecast for the city
+        String forecast = getForecast(model, city);
+        System.out.println("Weather forecast for " + city + ": " + forecast);
 
         scanner.close();
-
     }
 
-    public static MultiLayerNetwork loadModel() throws Exception {
-        // Implement logic to load the trained model from file
-        // For example:
-        // MultiLayerNetwork model = ModelSerializer.restoreMultiLayerNetwork(new File("path/to/model.zip"));
-        // return model;
-
-        // For this example, we'll train a simple model using the Iris dataset
-        IrisDataSetIterator irisIter = new IrisDataSetIterator(150, 150);
-        MultiLayerNetwork model = ModelUtils.createSimpleModel(irisIter);
-        return model;
+    public static SimpleNeuralNetwork loadModel() {
+        // Example initialization of the neural network
+        return new SimpleNeuralNetwork(); // Adjust dimensions as needed
     }
 
-    public static String getResponse(MultiLayerNetwork model, String city) {
-        // Implement code to get the weather forecast for the city by randomized numbers
-        // from 60-89f
-        // so if 60-75f would be cloudy while 76-89 would be sunny but the chatbot
-        // teaches itself
-        // based that information
+    public static String getForecast(SimpleNeuralNetwork model, String city) {
+        // Generate a random temperature for the city
         double temperature = Math.random() * (89 - 60) + 60;
-        if (temperature < 76) {
-            return "It will be cloudy in " + city + " today.";
+
+        // Based on the temperature, simulate a weather condition
+        if (temperature < 75) {
+            return "It will be cloudy in " + city + " today. (" + String.format("%.2f", temperature) + "F)";
+        } else {
+            return "It will be sunny in " + city + " today. (" + String.format("%.2f", temperature) + "F)";
         }
-        if (temperature > 76) {
-            return "It will be sunny in " + city + " today.";
-        }
-        return city
     }
+
 }

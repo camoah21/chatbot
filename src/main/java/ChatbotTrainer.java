@@ -1,46 +1,29 @@
 
-// Import necessary libraries
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
-import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator;
-import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-
-import main.java.demo.ModelUtils;
-import main.java.demo.myChatbot.*;
+import main.java.demo.SimpleNeuralNetwork;
+import main.java.demo.myChatbot;
 
 public class ChatbotTrainer {
 
-    /**
-     * The main function is used to train a neural network model. The input and
-     * output sizes are defined, the dataset is loaded and preprocessed, a
-     * MultiLayerNetwork model is created, trained on the dataset using an
-     * iterator, and finally saved as &quot;trained_model.zip&quot;.
-     *
-     *
-     * @param String[] args Pass command line arguments to the program
-     *
-     * @return The trained model
-     * @throws IOException
-     *
-     * @docauthor Chris Amoah
-     */
     public static void main(String[] args) throws IOException {
         // Load and preprocess the dataset
-        IrisDataSetIterator iterator = myChatbot.Preprocessing();
+        List<String> dataset = myChatbot.Preprocessing();  // Assuming this returns a usable dataset
 
-        // Create a model
-        MultiLayerNetwork model = ModelUtils.createSimpleModel(iterator);
+        // Initialize the neural network
+        SimpleNeuralNetwork model = new SimpleNeuralNetwork(); // Example dimensions
 
-        // Train the model
+        // Train the model (simplified example, normally you would pass actual data to forwardPass)
         int numEpochs = 10; // Number of training epochs
         for (int i = 0; i < numEpochs; i++) {
-            model.fit(iterator); // Fit the model on the dataset
+            // Example of how you might simulate training
+            model.forwardPass(new double[]{0.5, -1.2, 0.3}); // dummy data for the sake of example
         }
 
-        // Save the trained model
-        File modelFile = new File("trained_model.zip");
-        model.save(modelFile);
-        System.out.println("Trained model saved to: " + modelFile.getAbsolutePath())
+        // Assuming save functionality is implemented in SimpleNeuralNetwork
+        // This should serialize the network's parameters to a file
+        model.save("trained_model.zip");
+        System.out.println("Trained model saved to: trained_model.zip");
     }
 }

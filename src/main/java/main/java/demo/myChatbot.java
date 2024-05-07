@@ -7,12 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
-import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator;
 
 public class myChatbot {
 
@@ -27,39 +24,25 @@ public class myChatbot {
      * @docauthor Chris Amoah
      */
     public static void DataCollector() {
-        try (PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter("chatbot.txt", true)))) {
-            // Chatbot greets user
-            p.printf("Hello, I'm a chatbot. How can I help you today?\n");
+        try (Scanner scanner = new Scanner(System.in); PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter("chatbot.txt", true)))) {
+            System.out.println("Hello, I'm a chatbot. How can I help you today?");
+            String userInput, response;
 
-            // Collect conversation data until user says "bye"
-            try ( // User inputs
-                    Scanner scanner = new Scanner(System.in)) {
-                // Collect conversation data until user says "bye"
-                String userInput;
-                do {
-                    // Read user input
-                    System.out.print("You: ");
-                    userInput = scanner.nextLine();
+            while (true) {
+                System.out.print("You: ");
+                userInput = scanner.nextLine();
+                if ("bye".equalsIgnoreCase(userInput)) {
+                    break;
+                }
+                p.printf("You: %s\n", userInput);
 
-                    // Write user input to file
-                    p.printf("You: %s\n", userInput);
-
-                    // Prompt for response
-                    System.out.print("Chatbot: ");
-                    String response = scanner.nextLine();
-
-                    // Write response to file
-                    p.printf("Chatbot: %s\n", response);
-                } while (!userInput.equalsIgnoreCase("bye"));
-                System.out.println("Data collected successfully!");
-                // Close resources
+                System.out.print("Chatbot: ");
+                response = scanner.nextLine();
+                p.printf("Chatbot: %s\n", response);
             }
-            p.close();
-            System.out.println("Resources closed.");
-            System.out.println("Data collected successfully!");
-        } catch (IOException e) {
-            // Let user know if error occurs
-            System.out.println("An error occurred.");
+            System.out.println("Chat session ended.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
         }
     }
 
@@ -76,41 +59,23 @@ public class myChatbot {
      *
      * @docauthor Chris Amoah
      */
-    public static IrisDataSetIterator Preprocessing() throws IOException {
-        // TokenizerFactory
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader("/Users/chrisofori/Downloads/chatbot.txt"))) {
+    public static List<String> Preprocessing() throws IOException {
+        List<String> tokens = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("chatbot.txt"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                contentBuilder.append(line).append("\n");
+                // Remove punctuation and convert to lower case
+                line = line.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase();
+                // Tokenize the cleaned line
+                StringTokenizer tokenizer = new StringTokenizer(line);
+                while (tokenizer.hasMoreTokens()) {
+                    tokens.add(tokenizer.nextToken());
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
+            throw e;
         }
-
-        String text = contentBuilder.toString();
-        System.out.println(text);
-        text = text.replaceAll("[^a-zA-Z0-9 ]", "");
-        text = text.toLowerCase();
-        StringTokenizer tokenizer = new StringTokenizer(text);
-        List<String> tokens = new ArrayList<>();
-        while (tokenizer.hasMoreTokens()) {
-            tokens.add(tokenizer.nextToken());
-        }
-
-        // Vectorization
-        List<String> vector = new ArrayList<>();
-        for (String token : tokens) {
-            vector.add(token);
-        }
-        int[] bow = new int[vector.size()];
-        for (int i = 0; i < vector.size(); i++) {
-            bow[i] = vector.get(i).hashCode();
-            tokens.get(bow[i]);
-        }
-
-        // Print the vector
-        System.out.println(Arrays.toString(bow));
-        return null
+        return tokens;
     }
 }

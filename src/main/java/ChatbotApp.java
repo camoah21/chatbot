@@ -66,6 +66,6 @@ public class ChatbotApp {
         if (temperature > 76) {
             return "It will be sunny in " + city + " today.";
         }
-        return city;
+        return city
     }
 }

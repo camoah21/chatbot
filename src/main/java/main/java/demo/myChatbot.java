@@ -111,6 +111,6 @@ public class myChatbot {
 
         // Print the vector
         System.out.println(Arrays.toString(bow));
-        return null;
+        return null
     }
 }

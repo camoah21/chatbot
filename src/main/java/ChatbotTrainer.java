@@ -41,6 +41,6 @@ public class ChatbotTrainer {
         // Save the trained model
         File modelFile = new File("trained_model.zip");
         model.save(modelFile);
-        System.out.println("Trained model saved to: " + modelFile.getAbsolutePath());
+        System.out.println("Trained model saved to: " + modelFile.getAbsolutePath())
     }
 }

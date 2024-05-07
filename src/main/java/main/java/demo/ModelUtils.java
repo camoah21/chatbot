@@ -11,6 +11,7 @@ import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
 
 public class ModelUtils {
+
     public static MultiLayerNetwork createSimpleModel(IrisDataSetIterator irisIter) {
         int numInput = 4; // Number of input features (iris dataset has 4 features)
         int numClasses = 3; // Number of output classes (iris dataset has 3 classes)
@@ -20,21 +21,21 @@ public class ModelUtils {
 
         // Build the neural network configuration
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-            .seed(seed)
-            .weightInit(WeightInit.XAVIER)
-            .updater(org.nd4j.linalg.learning.config.Adam.builder().learningRate(0.001).build())
-            .list()
-            .layer(new DenseLayer.Builder()
-                    .nIn(numInput)
-                    .nOut(numHiddenNodes)
-                    .activation(Activation.RELU)
-                    .build())
-            .layer(new DenseLayer.Builder()
-                    .nIn(numHiddenNodes)
-                    .nOut(numClasses)
-                    .activation(Activation.SOFTMAX)
-                    .build())
-            .build();
+                .seed(seed)
+                .weightInit(WeightInit.XAVIER)
+                .updater(org.nd4j.linalg.learning.config.Adam.builder().learningRate(0.001).build())
+                .list()
+                .layer(new DenseLayer.Builder()
+                        .nIn(numInput)
+                        .nOut(numHiddenNodes)
+                        .activation(Activation.RELU)
+                        .build())
+                .layer(new DenseLayer.Builder()
+                        .nIn(numHiddenNodes)
+                        .nOut(numClasses)
+                        .activation(Activation.SOFTMAX)
+                        .build())
+                .build();
 
         // Create and initialize the MultiLayerNetwork
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
@@ -51,7 +52,7 @@ public class ModelUtils {
         // Evaluate the model (optional)
         irisIter.reset(); // Reset iterator before evaluation
         Evaluation eval = model.evaluate(irisIter);
-        System.out.println(eval.stats());
+        System.out.println(eval.stats();
 
         return model;
     }

@@ -36,11 +36,34 @@ public class ChatbotApp {
         scanner.close();
     }
 
+    /**
+     * The loadModel function loads a trained neural network model from the file
+     * specified by the path parameter. The function returns an instance of a
+     * class that implements SimpleNeuralNetwork, which is used to make
+     * predictions on new data.
+     *
+     *
+     *
+     * @return A simpleneuralnetwork object
+     *
+     * @docauthor Chris Amoah
+     */
     public static SimpleNeuralNetwork loadModel() {
         // Example initialization of the neural network
         return new SimpleNeuralNetwork(); // Adjust dimensions as needed
     }
 
+    /**
+     * The getForecast function takes in a city name and generates a weather
+     * forecast based on the temperature. It returns a string containing the
+     * forecast.
+     *
+     *
+     *
+     * @return A string
+     *
+     * @docauthor Chris Amoah
+     */
     public static String getForecast(SimpleNeuralNetwork model, String city) {
         // Generate a random temperature for the city
         double temperature = Math.random() * (89 - 60) + 60;

@@ -16,6 +16,18 @@ public class SimpleNeuralNetwork {
     private double[][] weights2;
     private double[] biases2;
 
+    /**
+     * The SimpleNeuralNetwork constructor initializes the weights and biases of
+     * the neural network.
+     *
+     * @param numInput The number of input nodes
+     * @param numHiddenNodes The number of hidden nodes
+     * @param numClasses The number of output classes
+     * @param seed The seed for the random number generator
+     * @return The number of output classes
+     *
+     * @docauthor Chris Amoah
+     */
     public int SimpleNeuralNetwork(int numInput, int numHiddenNodes, int numClasses, long seed) {
         this.numInput = numInput;
         this.numHiddenNodes = numHiddenNodes;
@@ -32,6 +44,19 @@ public class SimpleNeuralNetwork {
         return numClasses;
     }
 
+    /**
+     * The initializeWeights function initializes the weights and biases of the
+     * neural network. The weights are initialized using Xavier initialization,
+     * which is a method to initialize the weights such that they have a
+     * variance of 2/(numInput + numHiddenNodes) for layer 1, and
+     * 2/(numHiddenNodes + numClasses) for layer 2. This ensures that each
+     * neuron in each layer has an equal chance to be activated.
+     *
+     *
+     * @return Nothing
+     *
+     * @docauthor Chris Amoah
+     */
     private void initializeWeights() {
         // Xavier initialization for weights
         double std1 = Math.sqrt(2.0 / (numInput + numHiddenNodes));
@@ -52,6 +77,16 @@ public class SimpleNeuralNetwork {
         }
     }
 
+    /**
+     * The forwardPass function performs a forward pass through the neural
+     * network. It takes an input array, applies the weights and biases to it,
+     * and returns the output of the neural network.
+     *
+     * @param input The input array to the neural network
+     * @return The output of the neural network
+     *
+     * @docauthor Chris Amoah
+     */
     public double[] forwardPass(double[] input) {
         // First layer
         double[] hiddenLayer = new double[numHiddenNodes];
@@ -74,10 +109,33 @@ public class SimpleNeuralNetwork {
         return softmax(outputLayer);
     }
 
+    /**
+     * The relu function takes a double as input and returns the maximum of 0.0
+     * or the input value.
+     *
+     *
+     * @param double x Represent the input value
+     *
+     * @return The maximum of 0 and x
+     *
+     * @docauthor Chris Amoah
+     */
     private double relu(double x) {
         return Math.max(0.0, x);
     }
 
+    /**
+     * The softmax function takes an array of doubles as input and returns an
+     * array of doubles with the same length as the input array. The softmax
+     * function is used to normalize the output of the neural network, ensuring
+     * that the sum of the outputs is 1.
+     *
+     * @param double[] x Represent the input array
+     *
+     * @return The normalized array
+     *
+     * @docauthor Chris Amoah
+     */
     private double[] softmax(double[] x) {
         double max = Double.NEGATIVE_INFINITY;
         for (double value : x) {
@@ -99,6 +157,16 @@ public class SimpleNeuralNetwork {
         return x;
     }
 
+    /**
+     * The save function takes a filename as input and saves the entire object
+     * to the file.
+     *
+     * @param String filename Represent the filename
+     *
+     * @return Nothing
+     *
+     * @docauthor Chris Amoah
+     */
     public void save(String filename) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(this); // Write the entire object to the file
